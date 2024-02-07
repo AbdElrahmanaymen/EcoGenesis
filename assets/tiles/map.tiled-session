@@ -1,0 +1,61 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "map.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "map.tmx": {
+            "scale": 0.1417,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1781.9336626676072,
+                "y": 779.8165137614681
+            }
+        },
+        "map_2.tmx": {
+            "scale": 0.59,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": -92.37288135593212,
+                "y": 2.5423728813558455
+            }
+        },
+        "map_3.tmx": {
+            "scale": 0.5425390625,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 640.5068759449925,
+                "y": 470.93383252933984
+            }
+        },
+        "r01_s128_iso_0013.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "/Users/abdelrahmanaymen/Downloads/ecogenesis/assets/images/isometric_roadtiles_v1",
+    "map.fixedSize": true,
+    "map.height": 10,
+    "map.lastUsedFormat": "tmx",
+    "map.orientation": "1",
+    "map.tileHeight": 94,
+    "map.tileWidth": 128,
+    "map.width": 10,
+    "openFiles": [
+        "r01_s128_iso_0013.tsx",
+        "map.tmx"
+    ],
+    "project": "map.tiled-project",
+    "recentFiles": [
+        "r01_s128_iso_0013.tsx",
+        "map.tmx",
+        "map_3.tmx",
+        "map_2.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.type": 1
+}

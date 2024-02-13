@@ -1,8 +1,11 @@
 import 'dart:ui';
 
-import 'package:ecogenesis/levels/level_one.dart';
-import 'package:flame/camera.dart';
+import 'package:ecogenesis/component/cam_component.dart';
+import 'package:ecogenesis/component/map_component.dart';
+import 'package:ecogenesis/system/map_system.dart';
 import 'package:flame/game.dart';
+import 'package:flame_oxygen/flame_oxygen.dart';
+import 'package:flame_tiled/flame_tiled.dart';
 
 class EcoGensisGame extends FlameGame {
   @override
@@ -13,16 +16,43 @@ class EcoGensisGame extends FlameGame {
   final world = LevelOne();
 
   @override
-  Future<void> onLoad() async {
-    cam = CameraComponent.withFixedResolution(
-      width: 1920,
-      height: 1080,
-      world: world,
-    );
+  Future<void> init() async {
+    world.registerComponent(MapComponent.new);
+    world.registerComponent(CamComponent.new);
+    world.registerSystem(MapSystem());
 
-    addAll([
-      cam,
-      world,
-    ]);
+    createEntity(
+      position: Vector2.zero(),
+      size: Vector2(128, 75),
+    ).add<MapComponent, MapInit>(
+      MapInit(
+        await TiledComponent.load(
+          'map.tmx',
+          Vector2(128, 75),
+        ),
+      ),
+    );
   }
+
+  // late final CameraComponent cam;
+
+  // @override
+  // final world = Map();
+
+  // @override
+  // Future<void> onLoad() async {
+  //   cam = CameraComponent.withFixedResolution(
+  //     width: 3280,
+  //     height: 1900,
+  //     world: world,
+  //   );
+
+  //   cam.viewfinder.anchor = Anchor.topLeft;
+  //   cam.viewfinder.zoom = 1;
+
+  //   addAll([
+  //     world,
+  //     cam,
+  //   ]);
+  // }
 }

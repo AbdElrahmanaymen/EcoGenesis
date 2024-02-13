@@ -12,7 +12,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flame: ^1.14.0
   flame_tiled: ^1.18.3
-  # flame_oxygen: ^0.1.9+7
+  flame_oxygen: ^0.1.9+7
 
 dev_dependencies:
   flutter_test:

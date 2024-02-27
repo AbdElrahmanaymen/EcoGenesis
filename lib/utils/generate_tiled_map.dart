@@ -3,7 +3,7 @@ List<List<int>> generateTiledMap(int width, int height) {
     height,
     (y) => List.generate(
       width,
-      (x) => 3,
+      (x) => 0,
     ),
   );
 }

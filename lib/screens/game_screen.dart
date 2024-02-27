@@ -3,11 +3,13 @@ import 'dart:ui';
 
 import 'package:ecogenesis/component/selector_component.dart';
 import 'package:ecogenesis/utils/assets.dart';
-import 'package:ecogenesis/utils/generate_tiled_map.dart';
-import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
+import 'package:flame/widgets.dart';
+import 'package:flame_isometric/custom_isometric_tile_map_component.dart';
+import 'package:flame_isometric/flame_isometric.dart';
+import 'package:flutter/widgets.dart';
 import '../extensions//mouse_movement.dart';
 
 class EcoGensisGame extends FlameGame
@@ -15,15 +17,13 @@ class EcoGensisGame extends FlameGame
   @override
   Color backgroundColor() => const Color(0xFF064273);
 
-  final topLeft = Vector2.all(0);
   static const scale = 2.0;
-  static const srcTileSize = 32.0;
+  static const srcTileSize = 132;
   static const destTileSize = scale * srcTileSize;
 
-  static const halfSize = true;
-  static const tileHeight = scale * (halfSize ? 8.0 : 16.0);
+  static const tileHeight = scale * 66;
 
-  late IsometricTileMapComponent map;
+  // late TiledComponent terrain;
   late Selector selector;
 
   late double startZoom;
@@ -31,31 +31,34 @@ class EcoGensisGame extends FlameGame
   @override
   FutureOr<void> onLoad() async {
     camera.viewfinder.zoom = 0.5;
-    camera.viewfinder.position = Vector2(0, 700);
-
-    final tilesetImage = await images.load(Assets.spriteSheet);
-    final tileset = SpriteSheet(
-      image: tilesetImage,
-      srcSize: Vector2.all(srcTileSize),
-    );
-
-    final matrix = generateTiledMap(50, 50);
-
-    map = IsometricTileMapComponent(
-      tileset,
-      matrix,
-      destTileSize: Vector2.all(destTileSize),
-      tileHeight: tileHeight,
-      position: topLeft,
-    );
+    camera.viewfinder.position = Vector2(300, 700);
 
     final selectorImage = await images.load(Assets.selectorShort);
-    selector = Selector(destTileSize, selectorImage);
+    selector = Selector(132, selectorImage);
 
-    world.addAll([
-      map,
-      selector,
-    ]);
+    world.add(selector);
+
+    final landscapeImage = await images.load(Assets.landscapeTileSet);
+    final landscapeSpriteSheet = SpriteSheet(
+      image: landscapeImage,
+      srcSize: Vector2(132, 99),
+    );
+
+    final flameIsometric = await FlameIsometric.create(
+      tmx: 'tiles/terrain.tmx',
+      tileMap: 'landscape_tileset.png',
+    );
+
+    for (var renderLayer in flameIsometric.renderLayerList) {
+      world.add(
+        CustomIsometricTileMapComponent(
+          landscapeSpriteSheet,
+          renderLayer.matrix,
+          destTileSize: flameIsometric.srcTileSize,
+          tileHeight: 66,
+        ),
+      );
+    }
 
     return super.onLoad();
   }
@@ -87,9 +90,15 @@ class EcoGensisGame extends FlameGame
       camera.viewfinder.position,
       camera.viewfinder.zoom,
     );
+    final map =
+        world.children.whereType<CustomIsometricTileMapComponent>().last;
+
     final block = map.getBlock(screenPosition);
     selector.show = map.containsBlock(block);
     selector.position.setFrom(map.getBlockRenderPosition(block));
+    selector.priority = 1;
+    // selector.position
+    //     .setFrom(map.getBlockRenderPosition(block) + Vector2(40, 0));
 
     super.onMouseMove(info);
   }

@@ -11,8 +11,9 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   flame: ^1.14.0
-  flame_tiled: ^1.18.3
+  flame_tiled: ^1.19.0
   flame_oxygen: ^0.1.9+7
+  flame_isometric: ^0.4.2
 
 dev_dependencies:
   flutter_test:
@@ -26,4 +27,6 @@ flutter:
   assets:
     - assets/audio/
     - assets/images/
+    - assets/tiles/
+
 

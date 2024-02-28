@@ -1,4 +1,4 @@
-import 'package:ecogenesis/screens/game_screen.dart';
+import 'package:ecogenesis/game/eco_genesis_game.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 

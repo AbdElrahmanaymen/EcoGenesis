@@ -27,6 +27,7 @@ flutter:
   assets:
     - assets/audio/
     - assets/images/
+    - assets/images/character/
     - assets/tiles/
 
 

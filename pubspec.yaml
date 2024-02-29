@@ -28,6 +28,7 @@ flutter:
     - assets/audio/
     - assets/images/
     - assets/images/character/
+    - assets/images/HUD/Joystick/
     - assets/tiles/
 
 

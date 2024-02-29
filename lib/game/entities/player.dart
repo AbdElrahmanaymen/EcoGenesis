@@ -26,8 +26,6 @@ enum PlayerDirection {
 /// It contains animations for idle and walking states, and provides methods to load and retrieve sprite animations.
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<EcoGensisGame>, KeyboardHandler {
-  Player(position) : super(position: position);
-
   // Animation variables
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation walkAnimation;

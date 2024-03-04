@@ -111,12 +111,35 @@ class Player extends SpriteAnimationGroupComponent
   ///
   /// Determines the direction of the collision based on the player's velocity.
   /// Updates the [collidingDirection] property accordingly.
+  // @override
+  // void onCollisionStart(
+  //   Set<Vector2> intersectionPoints,
+  //   PositionComponent other,
+  // ) {
+  //   // Determine the direction of the collision
+  //   if (velocity.x > 0 && velocity.y == 0) {
+  //     collidingDirection = PlayerDirection.right;
+  //   } else if (velocity.x < 0 && velocity.y == 0) {
+  //     collidingDirection = PlayerDirection.left;
+  //   } else if (velocity.y > 0 && velocity.x == 0) {
+  //     collidingDirection = PlayerDirection.down;
+  //   } else if (velocity.y < 0 && velocity.x == 0) {
+  //     collidingDirection = PlayerDirection.up;
+  //   } else if (velocity.x > 0 && velocity.y > 0) {
+  //     collidingDirection = PlayerDirection.downRight;
+  //   } else if (velocity.x > 0 && velocity.y < 0) {
+  //     collidingDirection = PlayerDirection.upRight;
+  //   } else if (velocity.x < 0 && velocity.y > 0) {
+  //     collidingDirection = PlayerDirection.downLeft;
+  //   } else if (velocity.x < 0 && velocity.y < 0) {
+  //     collidingDirection = PlayerDirection.upLeft;
+  //   }
+
+  //   super.onCollisionStart(intersectionPoints, other);
+  // }
+
   @override
-  void onCollisionStart(
-    Set<Vector2> intersectionPoints,
-    PositionComponent other,
-  ) {
-    // Determine the direction of the collision
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (velocity.x > 0 && velocity.y == 0) {
       collidingDirection = PlayerDirection.right;
     } else if (velocity.x < 0 && velocity.y == 0) {
@@ -134,8 +157,7 @@ class Player extends SpriteAnimationGroupComponent
     } else if (velocity.x < 0 && velocity.y < 0) {
       collidingDirection = PlayerDirection.upLeft;
     }
-
-    super.onCollisionStart(intersectionPoints, other);
+    super.onCollision(intersectionPoints, other);
   }
 
   /// Callback method called when the player's collision with another entity ends.

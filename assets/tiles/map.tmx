@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="62" height="52" tilewidth="64" tileheight="64" infinite="0" nextlayerid="5" nextobjectid="6">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="62" height="52" tilewidth="64" tileheight="64" infinite="0" nextlayerid="7" nextobjectid="47">
  <tileset firstgid="1" source="Blocky_VikingVillage_Tileset.tsx"/>
  <layer id="1" name="Tile Layer 1" width="62" height="52" offsetx="-207.353" offsety="3.36247">
   <data encoding="csv">
@@ -57,6 +57,24 @@
 246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246,246
 </data>
  </layer>
+ <objectgroup id="6" name="Collisions">
+  <object id="37" type="rectangle" x="1820.38" y="902.165" width="105.843" height="72.362"/>
+  <object id="39" type="rectangle" x="1563.55" y="901.415" width="105.843" height="72.362"/>
+  <object id="40" type="rectangle" x="1308.32" y="901.415" width="105.843" height="72.362"/>
+  <object id="41" type="rectangle" x="2075.1" y="901.415" width="105.843" height="72.362"/>
+  <object id="42" type="circle" x="1857.41" y="1242.47" width="23.375" height="23.375">
+   <ellipse/>
+  </object>
+  <object id="44" type="circle" x="2076.29" y="994.197" width="25.2766" height="15.7687">
+   <ellipse/>
+  </object>
+  <object id="45" type="circle" x="1565.08" y="994.176" width="25.2766" height="15.7687">
+   <ellipse/>
+  </object>
+  <object id="46" type="circle" x="1052.45" y="994.998" width="25.2766" height="15.7687">
+   <ellipse/>
+  </object>
+ </objectgroup>
  <objectgroup id="4" name="Spawnpoints">
   <object id="5" name="Player" type="Player" x="1847.69" y="978.323" width="49" height="125"/>
  </objectgroup>

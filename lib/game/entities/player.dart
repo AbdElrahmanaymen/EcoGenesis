@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ecogenesis/game/eco_genesis_game.dart';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
@@ -25,21 +26,40 @@ enum PlayerDirection {
 /// The [Player] class extends [SpriteAnimationGroupComponent] and implements [HasGameRef] to have access to the game reference.
 /// It contains animations for idle and walking states, and provides methods to load and retrieve sprite animations.
 class Player extends SpriteAnimationGroupComponent
-    with HasGameRef<EcoGensisGame>, KeyboardHandler {
+    with HasGameRef<EcoGensisGame>, KeyboardHandler, CollisionCallbacks {
   // Animation variables
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation walkAnimation;
 
   final double stepTime = 0.05;
 
+  // The current state of the player
   PlayerDirection playerDirection = PlayerDirection.none;
   double moveSpeed = 100;
   Vector2 velocity = Vector2.zero();
   bool isFacingRight = true;
 
+  // The direction of the collision
+  PlayerDirection collidingDirection = PlayerDirection.none;
+
   @override
   FutureOr<void> onLoad() {
+    // Load all animations
     _loadAllAnimations();
+
+    // Add a hitbox to the player
+    add(
+      PolygonHitbox(
+        [
+          Vector2(0, 0),
+          Vector2(0, 10),
+          Vector2(50, 10),
+          Vector2(50, 0),
+        ],
+        position: Vector2(0, 115),
+      ),
+    );
+
     return super.onLoad();
   }
 
@@ -85,6 +105,46 @@ class Player extends SpriteAnimationGroupComponent
     }
 
     return super.onKeyEvent(event, keysPressed);
+  }
+
+  /// Callback method called when the player's collision with another entity starts.
+  ///
+  /// Determines the direction of the collision based on the player's velocity.
+  /// Updates the [collidingDirection] property accordingly.
+  @override
+  void onCollisionStart(
+    Set<Vector2> intersectionPoints,
+    PositionComponent other,
+  ) {
+    // Determine the direction of the collision
+    if (velocity.x > 0 && velocity.y == 0) {
+      collidingDirection = PlayerDirection.right;
+    } else if (velocity.x < 0 && velocity.y == 0) {
+      collidingDirection = PlayerDirection.left;
+    } else if (velocity.y > 0 && velocity.x == 0) {
+      collidingDirection = PlayerDirection.down;
+    } else if (velocity.y < 0 && velocity.x == 0) {
+      collidingDirection = PlayerDirection.up;
+    } else if (velocity.x > 0 && velocity.y > 0) {
+      collidingDirection = PlayerDirection.downRight;
+    } else if (velocity.x > 0 && velocity.y < 0) {
+      collidingDirection = PlayerDirection.upRight;
+    } else if (velocity.x < 0 && velocity.y > 0) {
+      collidingDirection = PlayerDirection.downLeft;
+    } else if (velocity.x < 0 && velocity.y < 0) {
+      collidingDirection = PlayerDirection.upLeft;
+    }
+
+    super.onCollisionStart(intersectionPoints, other);
+  }
+
+  /// Callback method called when the player's collision with another entity ends.
+  ///
+  /// This method sets the [collidingDirection] to [PlayerDirection.none]
+  @override
+  void onCollisionEnd(PositionComponent other) {
+    collidingDirection = PlayerDirection.none;
+    super.onCollisionEnd(other);
   }
 
   /// Loads all animations for the player entity.
@@ -143,8 +203,15 @@ class Player extends SpriteAnimationGroupComponent
   void _updatePlayerMovement(double dt) {
     double dirX = 0.0;
     double dirY = 0.0;
+
+    // Update the player's position based on the current direction
     switch (playerDirection) {
       case PlayerDirection.left:
+        // If the player is colliding with an entity from the left, stop moving
+        if (isColliding && collidingDirection == PlayerDirection.left) {
+          break;
+        }
+        // If the player is not facing left, flip the player horizontally
         if (isFacingRight) {
           flipHorizontallyAroundCenter();
           isFacingRight = false;
@@ -153,6 +220,11 @@ class Player extends SpriteAnimationGroupComponent
         dirX -= moveSpeed;
         break;
       case PlayerDirection.right:
+        // If the player is colliding with an entity from the right, stop moving
+        if (isColliding && collidingDirection == PlayerDirection.right) {
+          break;
+        }
+        // If the player is not facing right, flip the player horizontally
         if (!isFacingRight) {
           flipHorizontallyAroundCenter();
           isFacingRight = true;
@@ -161,14 +233,27 @@ class Player extends SpriteAnimationGroupComponent
         dirX += moveSpeed;
         break;
       case PlayerDirection.up:
+        // If the player is colliding with an entity from the top, stop moving
+        if (isColliding && collidingDirection == PlayerDirection.up) {
+          break;
+        }
         current = PlayerState.walk;
         dirY -= moveSpeed;
         break;
       case PlayerDirection.down:
+        // If the player is colliding with an entity from the bottom, stop moving
+        if (isColliding && collidingDirection == PlayerDirection.down) {
+          break;
+        }
         current = PlayerState.walk;
         dirY += moveSpeed;
         break;
       case PlayerDirection.upLeft:
+        // If the player is colliding with an entity from the top left, stop moving
+        if (isColliding && collidingDirection == PlayerDirection.upLeft) {
+          break;
+        }
+        // If the player is not facing left, flip the player horizontally
         if (isFacingRight) {
           flipHorizontallyAroundCenter();
           isFacingRight = false;
@@ -178,6 +263,11 @@ class Player extends SpriteAnimationGroupComponent
         dirY -= moveSpeed;
         break;
       case PlayerDirection.upRight:
+        // If the player is colliding with an entity from the top right, stop moving
+        if (isColliding && collidingDirection == PlayerDirection.upRight) {
+          break;
+        }
+        // If the player is not facing right, flip the player horizontally
         if (!isFacingRight) {
           flipHorizontallyAroundCenter();
           isFacingRight = true;
@@ -187,6 +277,11 @@ class Player extends SpriteAnimationGroupComponent
         dirY -= moveSpeed;
         break;
       case PlayerDirection.downLeft:
+        // If the player is colliding with an entity from the bottom left, stop moving
+        if (isColliding && collidingDirection == PlayerDirection.downLeft) {
+          break;
+        }
+        // If the player is not facing left, flip the player horizontally
         if (isFacingRight) {
           flipHorizontallyAroundCenter();
           isFacingRight = false;
@@ -196,6 +291,11 @@ class Player extends SpriteAnimationGroupComponent
         dirY += moveSpeed;
         break;
       case PlayerDirection.downRight:
+        // If the player is colliding with an entity from the bottom right, stop moving
+        if (isColliding && collidingDirection == PlayerDirection.downRight) {
+          break;
+        }
+        // If the player is not facing right, flip the player horizontally
         if (!isFacingRight) {
           flipHorizontallyAroundCenter();
           isFacingRight = true;
@@ -207,6 +307,7 @@ class Player extends SpriteAnimationGroupComponent
       default:
         current = PlayerState.idle;
     }
+    // Update the player's velocity and position
     velocity = Vector2(dirX, dirY);
     position += velocity * dt;
   }

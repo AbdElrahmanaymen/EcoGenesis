@@ -1,42 +1,57 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:ecogenesis/game/entities/collisions.dart';
 import 'package:ecogenesis/game/entities/player.dart';
 import 'package:ecogenesis/utils/assets.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/widgets.dart';
 
 class EcoGensisGame extends FlameGame
-    with HasKeyboardHandlerComponents, DragCallbacks {
+    with HasKeyboardHandlerComponents, DragCallbacks, HasCollisionDetection {
+  // The joystick component
   late final JoystickComponent joystick;
+
+  late final TiledComponent<FlameGame<World>> tiledMap;
+
+  // The player object
   final Player player = Player();
 
+  // The size of each tile in the map
   static const srcTileSize = 64.0;
 
+  // Show controls on mobile platforms
   bool showControls = Platform.isAndroid || Platform.isIOS;
 
   @override
   FutureOr<void> onLoad() async {
-    camera.viewfinder.zoom = 0.5;
-    camera.viewfinder.anchor = Anchor.topLeft;
+    // Load the map and initialize the game objects
+    await _loadMap();
 
-    _loadMap();
-
+    // Add the joystick to the game
     if (showControls) {
       addJoystick();
     }
+
+    // Set the camera configuration
+    _setupCamera();
 
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
+    // Update the joystick
+    if (showControls) {
+      updateJoytick();
+    }
+
     super.update(dt);
-    // updateJoytick();
   }
 
   /// Adds a joystick to the game.
@@ -54,7 +69,6 @@ class EcoGensisGame extends FlameGame
       priority: 10,
     );
     camera.viewport.add(joystick);
-    // add(joystick);
   }
 
   /// Updates the player's direction based on the current joystick direction.
@@ -109,8 +123,8 @@ class EcoGensisGame extends FlameGame
   /// The [Assets.map] parameter specifies the path to the map file.
   /// The [srcTileSize] parameter specifies the size of each tile in the map.
   ///
-  void _loadMap() async {
-    final tiledMap = await TiledComponent.load(
+  Future<void> _loadMap() async {
+    tiledMap = await TiledComponent.load(
       Assets.map,
       Vector2.all(srcTileSize),
     );
@@ -120,7 +134,7 @@ class EcoGensisGame extends FlameGame
     final spawnPointsLayer =
         tiledMap.tileMap.getLayer<ObjectGroup>('Spawnpoints');
 
-    for (final spawnPoint in spawnPointsLayer!.objects) {
+    for (final spawnPoint in spawnPointsLayer?.objects ?? []) {
       switch (spawnPoint.class_) {
         case 'Player':
           player.position = Vector2(spawnPoint.x, spawnPoint.y);
@@ -129,5 +143,43 @@ class EcoGensisGame extends FlameGame
         default:
       }
     }
+
+    final collisionsLayer =
+        tiledMap.tileMap.getLayer<ObjectGroup>('Collisions');
+
+    for (final collision in collisionsLayer?.objects ?? []) {
+      switch (collision.class_) {
+        case 'rectangle':
+          world.add(RectangleCollision(
+            size: Vector2(collision.width, collision.height),
+            position: Vector2(collision.x, collision.y),
+          ));
+          break;
+        case 'circle':
+          world.add(CircleCollision(
+            size: Vector2(collision.width, collision.height),
+            position: Vector2(collision.x, collision.y),
+          ));
+          break;
+        default:
+      }
+    }
+  }
+
+  /// Sets up the camera for the game.
+  void _setupCamera() {
+    final worldSizeX = tiledMap.size.x / 2;
+    final worldSizeY = tiledMap.size.y / 2;
+
+    // Set the camera bounds to the center of the world with the same size as the world.
+    camera.setBounds(
+      Rectangle.fromCenter(
+        center: Vector2(worldSizeX, worldSizeY),
+        size: Vector2(worldSizeX, worldSizeY),
+      ),
+    );
+
+    // Make the camera follow the player.
+    camera.follow(player);
   }
 }

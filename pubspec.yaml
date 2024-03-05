@@ -34,8 +34,6 @@ flutter:
     - assets/tiles/
 
   shaders:
-    - shaders/space.frag
-    - shaders/fog.frag
     - shaders/day_night.frag
 
 

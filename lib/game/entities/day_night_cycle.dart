@@ -4,14 +4,13 @@ import 'dart:ui';
 import 'package:ecogenesis/game/eco_genesis_game.dart';
 import 'package:flame/components.dart';
 
-class DayNightCycleShader extends PositionComponent
-    with HasGameRef<EcoGensisGame> {
+class DayNightCycle extends PositionComponent with HasGameRef<EcoGensisGame> {
   double time = 0;
   late final FragmentProgram program;
 
   bool isNight = false;
 
-  DayNightCycleShader()
+  DayNightCycle()
       : super(
           position: Vector2.zero(),
         );

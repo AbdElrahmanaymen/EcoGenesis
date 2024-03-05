@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:ecogenesis/game/entities/collisions.dart';
 import 'package:ecogenesis/game/entities/player.dart';
-import 'package:ecogenesis/game/shaders/day_night_shader.dart';
+import 'package:ecogenesis/game/entities/day_night_cycle.dart';
 import 'package:ecogenesis/utils/assets.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -43,7 +43,7 @@ class EcoGensisGame extends FlameGame
     _setupCamera();
 
     // Add Shaders
-    camera.viewport.add(DayNightCycleShader());
+    camera.viewport.add(DayNightCycle());
 
     return super.onLoad();
   }

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:ecogenesis/game/entities/collisions.dart';
 import 'package:ecogenesis/game/entities/player.dart';
+import 'package:ecogenesis/game/shaders/day_night_shader.dart';
 import 'package:ecogenesis/utils/assets.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -35,11 +36,14 @@ class EcoGensisGame extends FlameGame
 
     // Add the joystick to the game
     if (showControls) {
-      addJoystick();
+      await addJoystick();
     }
 
     // Set the camera configuration
     _setupCamera();
+
+    // Add Shaders
+    camera.viewport.add(DayNightCycleShader());
 
     return super.onLoad();
   }
@@ -59,7 +63,7 @@ class EcoGensisGame extends FlameGame
   /// This method loads the knob and background images for the joystick from the specified file paths.
   /// It then creates a [JoystickComponent] with the loaded images and sets its margin and priority.
   /// Finally, it adds the joystick to the game.
-  void addJoystick() async {
+  Future<void> addJoystick() async {
     final knobImage = await images.load('HUD/Joystick/knob.png');
     final backgroundImage = await images.load('HUD/Joystick/background.png');
     joystick = JoystickComponent(
@@ -88,28 +92,20 @@ class EcoGensisGame extends FlameGame
     switch (joystick.direction) {
       case JoystickDirection.up:
         player.playerDirection = PlayerDirection.up;
-        break;
       case JoystickDirection.right:
         player.playerDirection = PlayerDirection.right;
-        break;
       case JoystickDirection.down:
         player.playerDirection = PlayerDirection.down;
-        break;
       case JoystickDirection.left:
         player.playerDirection = PlayerDirection.left;
-        break;
       case JoystickDirection.downLeft:
         player.playerDirection = PlayerDirection.downLeft;
-        break;
       case JoystickDirection.downRight:
         player.playerDirection = PlayerDirection.downRight;
-        break;
       case JoystickDirection.upLeft:
         player.playerDirection = PlayerDirection.upLeft;
-        break;
       case JoystickDirection.upRight:
         player.playerDirection = PlayerDirection.upRight;
-        break;
       default:
         player.playerDirection = PlayerDirection.none;
     }
@@ -134,12 +130,11 @@ class EcoGensisGame extends FlameGame
     final spawnPointsLayer =
         tiledMap.tileMap.getLayer<ObjectGroup>('Spawnpoints');
 
-    for (final spawnPoint in spawnPointsLayer?.objects ?? []) {
+    for (final spawnPoint in spawnPointsLayer?.objects ?? <TiledObject>[]) {
       switch (spawnPoint.class_) {
         case 'Player':
           player.position = Vector2(spawnPoint.x, spawnPoint.y);
           world.add(player);
-          break;
         default:
       }
     }
@@ -147,20 +142,22 @@ class EcoGensisGame extends FlameGame
     final collisionsLayer =
         tiledMap.tileMap.getLayer<ObjectGroup>('Collisions');
 
-    for (final collision in collisionsLayer?.objects ?? []) {
+    for (final collision in collisionsLayer?.objects ?? <TiledObject>[]) {
       switch (collision.class_) {
         case 'rectangle':
-          world.add(RectangleCollision(
-            size: Vector2(collision.width, collision.height),
-            position: Vector2(collision.x, collision.y),
-          ));
-          break;
+          world.add(
+            RectangleCollision(
+              size: Vector2(collision.width, collision.height),
+              position: Vector2(collision.x, collision.y),
+            ),
+          );
         case 'circle':
-          world.add(CircleCollision(
-            size: Vector2(collision.width, collision.height),
-            position: Vector2(collision.x, collision.y),
-          ));
-          break;
+          world.add(
+            CircleCollision(
+              size: Vector2(collision.width, collision.height),
+              position: Vector2(collision.x, collision.y),
+            ),
+          );
         default:
       }
     }
@@ -168,18 +165,22 @@ class EcoGensisGame extends FlameGame
 
   /// Sets up the camera for the game.
   void _setupCamera() {
+    // camera = CameraComponent.withFixedResolution(width: 1280, height: 720);
+    // camera.viewport = FixedResolutionViewport(resolution: Vector2(1280, 720));
+
     final worldSizeX = tiledMap.size.x / 2;
     final worldSizeY = tiledMap.size.y / 2;
 
     // Set the camera bounds to the center of the world with the same size as the world.
-    camera.setBounds(
-      Rectangle.fromCenter(
-        center: Vector2(worldSizeX, worldSizeY),
-        size: Vector2(worldSizeX, worldSizeY),
-      ),
-    );
+    camera
+      ..setBounds(
+        Rectangle.fromCenter(
+          center: Vector2(worldSizeX, worldSizeY),
+          size: Vector2(worldSizeX, worldSizeY),
+        ),
+      )
 
-    // Make the camera follow the player.
-    camera.follow(player);
+      // Make the camera follow the player.
+      ..follow(player);
   }
 }

@@ -175,7 +175,7 @@ class Player extends SpriteAnimationGroupComponent
   /// It uses the [_spriteAnimation] method to load each animation with the specified parameters.
   /// The loaded animations are then added to the `animations` map, with the corresponding player state as the key.
   /// Finally, the current animation is set to idle.
-  void _loadAllAnimations() async {
+  Future<void> _loadAllAnimations() async {
     // Load all animations
     idleAnimation = await _spriteAnimation('idle', 10, Vector2(49, 125));
     walkAnimation = await _spriteAnimation('walk', 10, Vector2(54, 129));
@@ -223,8 +223,8 @@ class Player extends SpriteAnimationGroupComponent
   /// The [moveSpeed] property determines the speed at which the player moves.
   /// The player's position is updated based on the velocity and the elapsed time [dt].
   void _updatePlayerMovement(double dt) {
-    double dirX = 0.0;
-    double dirY = 0.0;
+    var dirX = 0.0;
+    var dirY = 0.0;
 
     // Update the player's position based on the current direction
     switch (playerDirection) {
@@ -240,7 +240,6 @@ class Player extends SpriteAnimationGroupComponent
         }
         current = PlayerState.walk;
         dirX -= moveSpeed;
-        break;
       case PlayerDirection.right:
         // If the player is colliding with an entity from the right, stop moving
         if (isColliding && collidingDirection == PlayerDirection.right) {
@@ -253,7 +252,6 @@ class Player extends SpriteAnimationGroupComponent
         }
         current = PlayerState.walk;
         dirX += moveSpeed;
-        break;
       case PlayerDirection.up:
         // If the player is colliding with an entity from the top, stop moving
         if (isColliding && collidingDirection == PlayerDirection.up) {
@@ -261,7 +259,6 @@ class Player extends SpriteAnimationGroupComponent
         }
         current = PlayerState.walk;
         dirY -= moveSpeed;
-        break;
       case PlayerDirection.down:
         // If the player is colliding with an entity from the bottom, stop moving
         if (isColliding && collidingDirection == PlayerDirection.down) {
@@ -269,7 +266,6 @@ class Player extends SpriteAnimationGroupComponent
         }
         current = PlayerState.walk;
         dirY += moveSpeed;
-        break;
       case PlayerDirection.upLeft:
         // If the player is colliding with an entity from the top left, stop moving
         if (isColliding && collidingDirection == PlayerDirection.upLeft) {
@@ -283,7 +279,6 @@ class Player extends SpriteAnimationGroupComponent
         current = PlayerState.walk;
         dirX -= moveSpeed;
         dirY -= moveSpeed;
-        break;
       case PlayerDirection.upRight:
         // If the player is colliding with an entity from the top right, stop moving
         if (isColliding && collidingDirection == PlayerDirection.upRight) {
@@ -297,7 +292,6 @@ class Player extends SpriteAnimationGroupComponent
         current = PlayerState.walk;
         dirX += moveSpeed;
         dirY -= moveSpeed;
-        break;
       case PlayerDirection.downLeft:
         // If the player is colliding with an entity from the bottom left, stop moving
         if (isColliding && collidingDirection == PlayerDirection.downLeft) {
@@ -311,7 +305,6 @@ class Player extends SpriteAnimationGroupComponent
         current = PlayerState.walk;
         dirX -= moveSpeed;
         dirY += moveSpeed;
-        break;
       case PlayerDirection.downRight:
         // If the player is colliding with an entity from the bottom right, stop moving
         if (isColliding && collidingDirection == PlayerDirection.downRight) {
@@ -325,7 +318,6 @@ class Player extends SpriteAnimationGroupComponent
         current = PlayerState.walk;
         dirX += moveSpeed;
         dirY += moveSpeed;
-        break;
       default:
         current = PlayerState.idle;
     }

@@ -10,16 +10,18 @@ import 'package:flame/components.dart';
 ///
 /// Used for the houses and other rectangular objects
 class RectangleCollision extends PositionComponent {
-  RectangleCollision({required size, required position})
+  RectangleCollision({required Vector2 size, required Vector2 position})
       : super(size: size, position: position);
 
   @override
   FutureOr<void> onLoad() {
-    add(RectangleHitbox(
-      size: size,
-      isSolid: true,
-      collisionType: CollisionType.passive,
-    ));
+    add(
+      RectangleHitbox(
+        size: size,
+        isSolid: true,
+        collisionType: CollisionType.passive,
+      ),
+    );
     return super.onLoad();
   }
 }
@@ -31,14 +33,16 @@ class RectangleCollision extends PositionComponent {
 ///
 /// Used for Trees, Barrels and other circular objects
 class CircleCollision extends PositionComponent {
-  CircleCollision({required size, required position})
+  CircleCollision({required Vector2 size, required Vector2 position})
       : super(size: size, position: position);
 
   @override
   FutureOr<void> onLoad() {
-    add(CircleHitbox(
-      collisionType: CollisionType.passive,
-    ));
+    add(
+      CircleHitbox(
+        collisionType: CollisionType.passive,
+      ),
+    );
     return super.onLoad();
   }
 }

@@ -1,6 +1,6 @@
 name: ecogenesis
 description: "A new Flutter project."
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
@@ -14,6 +14,7 @@ dependencies:
   flame_tiled: ^1.19.0
   flame_oxygen: ^0.1.9+7
   flame_isometric: ^0.4.2
+  flutter_shaders: ^0.1.2
 
 dev_dependencies:
   flutter_test:
@@ -23,6 +24,7 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+  generate: true
 
   assets:
     - assets/audio/
@@ -30,5 +32,10 @@ flutter:
     - assets/images/character/
     - assets/images/HUD/Joystick/
     - assets/tiles/
+
+  shaders:
+    - shaders/space.frag
+    - shaders/fog.frag
+    - shaders/day_night.frag
 
 

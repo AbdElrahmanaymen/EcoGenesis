@@ -21,7 +21,7 @@ class EcoGensisGame extends FlameGame
   late final TiledComponent<FlameGame<World>> tiledMap;
 
   // The player object
-  final Player player = Player();
+  final Player player = Player()..priority = 1000;
 
   // The size of each tile in the map
   static const srcTileSize = 64.0;
@@ -165,9 +165,6 @@ class EcoGensisGame extends FlameGame
 
   /// Sets up the camera for the game.
   void _setupCamera() {
-    // camera = CameraComponent.withFixedResolution(width: 1280, height: 720);
-    // camera.viewport = FixedResolutionViewport(resolution: Vector2(1280, 720));
-
     final worldSizeX = tiledMap.size.x / 2;
     final worldSizeY = tiledMap.size.y / 2;
 

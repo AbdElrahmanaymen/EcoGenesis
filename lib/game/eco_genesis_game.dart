@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:ecogenesis/game/entities/collisions.dart';
+import 'package:ecogenesis/game/entities/hud.dart';
 import 'package:ecogenesis/game/entities/player.dart';
 import 'package:ecogenesis/game/managers/day_night_cycle.dart';
 import 'package:ecogenesis/utils/assets.dart';
@@ -29,6 +30,8 @@ class EcoGensisGame extends FlameGame
   // Show controls on mobile platforms
   bool showControls = Platform.isAndroid || Platform.isIOS;
 
+  late final HUD hud;
+
   @override
   FutureOr<void> onLoad() async {
     // Load the map and initialize the game objects
@@ -44,6 +47,12 @@ class EcoGensisGame extends FlameGame
 
     // Add Shaders
     camera.viewport.add(DayNightCycle());
+
+    // Add Day & Night Cycle HUD
+    hud = HUD();
+    hud.position = Vector2(0, 0);
+
+    camera.viewport.add(hud);
 
     return super.onLoad();
   }

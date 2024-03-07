@@ -1,1 +1,1 @@
-final double cycleDuration = 3600; // one hour game cycle in seconds
+final double cycleDuration = 840; // 14 mins game cycle in seconds

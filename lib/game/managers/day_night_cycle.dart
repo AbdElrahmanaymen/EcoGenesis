@@ -68,5 +68,7 @@ class DayNightCycle extends PositionComponent with HasGameRef<EcoGensisGame> {
 
     // Calculate the current position in the day-night cycle
     cycleProgress = totalTimeElapsed % cycleDuration / cycleDuration;
+
+    game.hud.time = cycleProgress;
   }
 }

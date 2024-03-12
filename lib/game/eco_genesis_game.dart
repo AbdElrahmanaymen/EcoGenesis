@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:ecogenesis/game/entities/collisions.dart';
 import 'package:ecogenesis/game/entities/hud.dart';
+import 'package:ecogenesis/game/entities/plastic.dart';
 import 'package:ecogenesis/game/entities/player.dart';
 import 'package:ecogenesis/game/managers/day_night_cycle.dart';
 import 'package:ecogenesis/utils/assets.dart';
@@ -25,7 +26,7 @@ class EcoGensisGame extends FlameGame
   final Player player = Player()..priority = 1000;
 
   // The size of each tile in the map
-  static const srcTileSize = 64.0;
+  static const srcTileSize = 32.0;
 
   // Show controls on mobile platforms
   bool showControls = Platform.isAndroid || Platform.isIOS;
@@ -50,7 +51,7 @@ class EcoGensisGame extends FlameGame
 
     // Add Day & Night Cycle HUD
     hud = HUD();
-    hud.position = Vector2(0, 0);
+    hud.position = Vector2(32, 0);
 
     camera.viewport.add(hud);
 
@@ -144,6 +145,8 @@ class EcoGensisGame extends FlameGame
         case 'Player':
           player.position = Vector2(spawnPoint.x, spawnPoint.y);
           world.add(player);
+        case 'Plastic':
+          world.add(Plastic(Vector2(spawnPoint.x, spawnPoint.y)));
         default:
       }
     }
@@ -188,5 +191,8 @@ class EcoGensisGame extends FlameGame
 
       // Make the camera follow the player.
       ..follow(player);
+
+    // Set the camera zoom level.
+    // ..viewfinder.zoom = 1.5;
   }
 }

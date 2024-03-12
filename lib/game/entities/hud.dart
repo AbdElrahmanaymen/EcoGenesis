@@ -11,6 +11,7 @@ class HUD extends PositionComponent with HasGameRef<EcoGensisGame> {
   late final StateMachineController? controller;
 
   SMIInput<double>? _TimeInput;
+  SMIInput<double>? _HealthInput;
 
   double time = 0;
 
@@ -26,9 +27,11 @@ class HUD extends PositionComponent with HasGameRef<EcoGensisGame> {
       skillsArtboard.addController(controller!);
       _TimeInput = controller?.findInput<double>('Time');
       _TimeInput?.value = 0;
+      _HealthInput = controller?.findInput<double>('Health');
+      _HealthInput?.value = 100;
     }
 
-    add(RiveComponent(artboard: skillsArtboard, size: Vector2.all(240)));
+    add(RiveComponent(artboard: skillsArtboard, size: Vector2.all(120)));
 
     return super.onLoad();
   }

@@ -12,8 +12,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   flame: ^1.14.0
   flame_tiled: ^1.19.0
-  flame_oxygen: ^0.1.9+7
-  flame_isometric: ^0.4.2
   flutter_shaders: ^0.1.2
   flame_rive: ^1.10.0
 
@@ -30,6 +28,7 @@ flutter:
   assets:
     - assets/audio/
     - assets/images/
+    - assets/images/Generic Old West Graphicis/
     - assets/images/character/
     - assets/images/HUD/Joystick/
     - assets/tiles/

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ecogenesis/game/eco_genesis_game.dart';
+import 'package:ecogenesis/game/entities/plastic.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
@@ -107,56 +108,31 @@ class Player extends SpriteAnimationGroupComponent
     return super.onKeyEvent(event, keysPressed);
   }
 
-  /// Callback method called when the player's collision with another entity starts.
-  ///
-  /// Determines the direction of the collision based on the player's velocity.
-  /// Updates the [collidingDirection] property accordingly.
-  // @override
-  // void onCollisionStart(
-  //   Set<Vector2> intersectionPoints,
-  //   PositionComponent other,
-  // ) {
-  //   // Determine the direction of the collision
-  //   if (velocity.x > 0 && velocity.y == 0) {
-  //     collidingDirection = PlayerDirection.right;
-  //   } else if (velocity.x < 0 && velocity.y == 0) {
-  //     collidingDirection = PlayerDirection.left;
-  //   } else if (velocity.y > 0 && velocity.x == 0) {
-  //     collidingDirection = PlayerDirection.down;
-  //   } else if (velocity.y < 0 && velocity.x == 0) {
-  //     collidingDirection = PlayerDirection.up;
-  //   } else if (velocity.x > 0 && velocity.y > 0) {
-  //     collidingDirection = PlayerDirection.downRight;
-  //   } else if (velocity.x > 0 && velocity.y < 0) {
-  //     collidingDirection = PlayerDirection.upRight;
-  //   } else if (velocity.x < 0 && velocity.y > 0) {
-  //     collidingDirection = PlayerDirection.downLeft;
-  //   } else if (velocity.x < 0 && velocity.y < 0) {
-  //     collidingDirection = PlayerDirection.upLeft;
-  //   }
-
-  //   super.onCollisionStart(intersectionPoints, other);
-  // }
-
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (velocity.x > 0 && velocity.y == 0) {
-      collidingDirection = PlayerDirection.right;
-    } else if (velocity.x < 0 && velocity.y == 0) {
-      collidingDirection = PlayerDirection.left;
-    } else if (velocity.y > 0 && velocity.x == 0) {
-      collidingDirection = PlayerDirection.down;
-    } else if (velocity.y < 0 && velocity.x == 0) {
-      collidingDirection = PlayerDirection.up;
-    } else if (velocity.x > 0 && velocity.y > 0) {
-      collidingDirection = PlayerDirection.downRight;
-    } else if (velocity.x > 0 && velocity.y < 0) {
-      collidingDirection = PlayerDirection.upRight;
-    } else if (velocity.x < 0 && velocity.y > 0) {
-      collidingDirection = PlayerDirection.downLeft;
-    } else if (velocity.x < 0 && velocity.y < 0) {
-      collidingDirection = PlayerDirection.upLeft;
+    if (other is Plastic) {
+      other.colidingWithPlayer();
+      print('plastic');
+    } else {
+      if (velocity.x > 0 && velocity.y == 0) {
+        collidingDirection = PlayerDirection.right;
+      } else if (velocity.x < 0 && velocity.y == 0) {
+        collidingDirection = PlayerDirection.left;
+      } else if (velocity.y > 0 && velocity.x == 0) {
+        collidingDirection = PlayerDirection.down;
+      } else if (velocity.y < 0 && velocity.x == 0) {
+        collidingDirection = PlayerDirection.up;
+      } else if (velocity.x > 0 && velocity.y > 0) {
+        collidingDirection = PlayerDirection.downRight;
+      } else if (velocity.x > 0 && velocity.y < 0) {
+        collidingDirection = PlayerDirection.upRight;
+      } else if (velocity.x < 0 && velocity.y > 0) {
+        collidingDirection = PlayerDirection.downLeft;
+      } else if (velocity.x < 0 && velocity.y < 0) {
+        collidingDirection = PlayerDirection.upLeft;
+      }
     }
+
     super.onCollision(intersectionPoints, other);
   }
 

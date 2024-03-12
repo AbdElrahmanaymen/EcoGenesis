@@ -97,22 +97,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.16.0"
-  flame_isometric:
-    dependency: "direct main"
-    description:
-      name: flame_isometric
-      sha256: eeae72d6b4a3cf95fd0cd267fd6c29a708306ac72adf425ede0d150419aa1686
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.2"
-  flame_oxygen:
-    dependency: "direct main"
-    description:
-      name: flame_oxygen
-      sha256: "44c64837155ea8afe60e823bc8794eb0b7f1e7033990a28bdf8c486928d2960e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.9+8"
   flame_rive:
     dependency: "direct main"
     description:
@@ -256,14 +240,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.2"
-  oxygen:
-    dependency: transitive
-    description:
-      name: oxygen
-      sha256: "57c331b91d021a7800dcb8107d1414cc2247eb086f07f309503f34fff3b3d7b9"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.0"
   path:
     dependency: transitive
     description:

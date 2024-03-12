@@ -11,7 +11,9 @@ import 'package:flame/components.dart';
 /// Used for the houses and other rectangular objects
 class RectangleCollision extends PositionComponent {
   RectangleCollision({required Vector2 size, required Vector2 position})
-      : super(size: size, position: position);
+      : super(size: size, position: position) {
+    debugMode = true;
+  }
 
   @override
   FutureOr<void> onLoad() {
